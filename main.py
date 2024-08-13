@@ -31,13 +31,19 @@ def guardarmenu(midato):#función para guardar cambios en el json
 def opciones():
     print("--------MOLIPOLLITO--------")
     print("1. HACER PEDIDO")
-    print("2. ")
+    print("2. VER PEDIDOS")
 def categorias():
     print("----Categorias----\n")
     print("1. entrada")
     print("2. Plato fuerte")
     print("3. Bebidas")
     print("4. terminar pedido")
+def mostrar_pedidos():
+    print("""
+    --------VER PEDIDOS-------
+    1. Todos los pedidos
+    2. Ver pedido especifico
+    """)
 pagos=Abrirpagos()
 guardarpagos(pagos)
 
@@ -51,8 +57,8 @@ while bucle==True:
         pedidos=Abrirpedidos()
         nombre_cliente=input("Nombre del cliente: ")
         lista_pedido=[]
-        bool=True
-        while bool==True:
+        booleano=True
+        while booleano==True:
             categorias()
             opc_categoria=input("de que categoría: ")
             if opc_categoria=="1":
@@ -62,13 +68,13 @@ while bucle==True:
                         print("Nombre: ",i["nombre"])
                         print("Precio: ",i["precio"])
                         print("--------------------------")
-                for i in menu["menu"]:
-                    plato_pedido=input("nombre de lo que pediste: ")
-                    if plato_pedido==i["nombre"] and i["categoria"]=="plato_fuerte":
-                        lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
-                    else:
-                        print("este producto no existe")
-                        print("o lo escribiste mal")
+                bool=True
+                while bool==True:
+                    plato_pedido=input("nombre de lo que pediste: ")      
+                    for i in menu["menu"]:
+                        if plato_pedido==i["nombre"] and i["categoria"]=="entrada":
+                            lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
+                            bool=False
 
             if opc_categoria=="2":
                 for i in menu["menu"]:
@@ -77,31 +83,53 @@ while bucle==True:
                         print("Nombre: ",i["nombre"])
                         print("Precio: ",i["precio"])
                         print("--------------------------")
-                        
-                for i in menu["menu"]:
-                    plato_pedido=input("nombre de lo que pediste: ")
-                    if plato_pedido==i["nombre"] and i["categoria"]=="plato_fuerte":
-                        lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
-                    else:
-                        print("este producto no existe")
-                        print("o lo escribiste mal")
+
+                bool=True
+                while bool==True:
+                    plato_pedido=input("nombre de lo que pediste: ")      
+                    for i in menu["menu"]:
+                        if plato_pedido==i["nombre"] and i["categoria"]=="plato_fuerte":
+                            lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
+                            bool=False
 
             if opc_categoria=="3":
                 for i in menu["menu"]:
-                    if i["categoria"]=="bebidas":
+                    if i["categoria"]=="bebida":
                         print("--------------------------")
                         print("Nombre: ",i["nombre"])
                         print("Precio: ",i["precio"])
                         print("--------------------------")
-                for i in menu["menu"]:
-                    plato_pedido=input("nombre de lo que pediste: ")
-                    if plato_pedido==i["nombre"] and i["categoria"]=="plato_fuerte":
-                        lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
-                    else:
-                        print("este producto no existe")
-                        print("o lo escribiste mal")
+                bool=True
+                while bool==True:
+                    plato_pedido=input("nombre de lo que pediste: ")      
+                    for i in menu["menu"]:
+                        if plato_pedido==i["nombre"] and i["categoria"]=="bebida":
+                            lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
+                            bool=False
 
             if opc_categoria=="4":
-                bool=False
-        pagado=input("El pedido se pagó?")
-            
+                booleano=False
+        estado=input("Estado del pedido: ")
+        pedidos["pedidos"].append({"cliente":nombre_cliente, "items":lista_pedido,"estado":estado})
+        guardarpedidos(pedidos)
+    if opc=="2":
+        pedidos=Abrirpedidos()
+        bool=True
+        while bool==True:
+            mostrar_pedidos()
+            opc_pedidos=input("escoje una opción")
+            if opc_pedidos=="1":
+                for i in pedidos["pedidos"]:
+                    print("///////////////////////////////")
+                    print("cliente: ",i["cliente"])
+                    contador=0
+                    for x in i["items"]:
+                        contador+=1
+                        print("-------------------------------")
+                        print("item #",contador)
+                        print("Categiria: ",x["categoria"])
+                        print("Nombre: ",x["nombre"])
+                        print("Precio: ",x["precio"])
+                        print("-------------------------------")
+                    print("Estado: ",i["estado"])
+                    print("///////////////////////////////")

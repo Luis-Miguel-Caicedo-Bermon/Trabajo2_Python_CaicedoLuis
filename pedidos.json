@@ -94,6 +94,27 @@
                 }
             ],
             "estado": "creado"
+        },
+        {
+            "cliente": "luis",
+            "items": [
+                {
+                    "categoria": "plato_fuerte",
+                    "nombre": "Pollo al Curry",
+                    "precio": 30000
+                },
+                {
+                    "categoria": "entrada",
+                    "nombre": "Dedos de Queso",
+                    "precio": 11000
+                },
+                {
+                    "categoria": "bebida",
+                    "nombre": "Jugo Natural",
+                    "precio": 5000
+                }
+            ],
+            "estado": "creado"
         }
     ]
 }
