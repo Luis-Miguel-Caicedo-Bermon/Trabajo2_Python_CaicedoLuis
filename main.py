@@ -43,6 +43,7 @@ def mostrar_pedidos():
     --------VER PEDIDOS-------
     1. Todos los pedidos
     2. Ver pedido especifico
+    3. volver
     """)
 pagos=Abrirpagos()
 guardarpagos(pagos)
@@ -117,7 +118,7 @@ while bucle==True:
         bool=True
         while bool==True:
             mostrar_pedidos()
-            opc_pedidos=input("escoje una opción")
+            opc_pedidos=input("escoje una opción: ")
             if opc_pedidos=="1":
                 for i in pedidos["pedidos"]:
                     print("///////////////////////////////")
@@ -133,3 +134,40 @@ while bucle==True:
                         print("-------------------------------")
                     print("Estado: ",i["estado"])
                     print("///////////////////////////////")
+            if opc_pedidos=="2":
+                pedidos=Abrirpedidos()
+                print("------VER PEDIDO ESPECIFICO-----")
+                bool=True
+                while bool==True:
+                    nombre=input("Nombre del cliente que realizó el pedido: ")
+                    con=0
+                    for i in pedidos["pedidos"]:
+                        if i["cliente"]==nombre:
+                            con+=1
+                            print("///////////////////////////////")
+                            print("cliente: ",i["cliente"])
+                            contador=0
+                            for x in i["items"]:
+                                contador+=1
+                                print("-------------------------------")
+                                print("item #",contador)
+                                print("Categiria: ",x["categoria"])
+                                print("Nombre: ",x["nombre"])
+                                print("Precio: ",x["precio"])
+                                print("-------------------------------")
+                            print("Estado: ",i["estado"])
+                            print("///////////////////////////////")
+                    if con==0:
+                        print("no existe este cliente o los escribiste mal")
+                        print("vuelve a intentarlo")
+                    else:
+                        x1=True
+                        while x1==True:
+                            print("1. Ver otro pedido")
+                            print("2. salir")
+                            salir=input("Ingrea tu opción: ")
+                            if salir=="1":
+                                x1=False
+                            if salir=="2":
+                                bool=False
+                                x1=False
