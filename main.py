@@ -56,63 +56,88 @@ while bucle==True:
     if opc=="1":
         menu=Abrirmenu()
         pedidos=Abrirpedidos()
-        nombre_cliente=input("Nombre del cliente: ")
-        lista_pedido=[]
-        booleano=True
-        while booleano==True:
-            categorias()
-            opc_categoria=input("de que categoría: ")
-            if opc_categoria=="1":
-                for i in menu["menu"]:
-                    if i["categoria"]=="entrada":
-                        print("--------------------------")
-                        print("Nombre: ",i["nombre"])
-                        print("Precio: ",i["precio"])
-                        print("--------------------------")
-                bool=True
-                while bool==True:
-                    plato_pedido=input("nombre de lo que pediste: ")      
-                    for i in menu["menu"]:
-                        if plato_pedido==i["nombre"] and i["categoria"]=="entrada":
-                            lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
-                            bool=False
+        pagos=Abrirpagos()
+        x1=True
+        while x1==True:
+            nombre_cliente=input("Nombre del cliente: ")
+            cont1=0
+            for i in pedidos["pedidos"]:
+                if nombre_cliente==i["cliente"] and i["estado"]!="pagado":
+                    print("en este momento este cliente no puede realizar pedidos hasta que pague su pedido anterior")
+                    cont1+=1
+                
+            if cont1==0:
+                lista_pedido=[]
+                booleano=True
+                while booleano==True:
+                    categorias()
+                    opc_categoria=input("de que categoría: ")
+                    if opc_categoria=="1":
+                        for i in menu["menu"]:
+                            if i["categoria"]=="entrada":
+                                print("--------------------------")
+                                print("Nombre: ",i["nombre"])
+                                print("Precio: ",i["precio"])
+                                print("--------------------------")
+                        bool=True
+                        while bool==True:
+                            plato_pedido=input("nombre de lo que pediste: ")      
+                            for i in menu["menu"]:
+                                if plato_pedido==i["nombre"] and i["categoria"]=="entrada":
+                                    lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
+                                    bool=False
 
-            if opc_categoria=="2":
-                for i in menu["menu"]:
-                    if i["categoria"]=="plato_fuerte":
-                        print("--------------------------")
-                        print("Nombre: ",i["nombre"])
-                        print("Precio: ",i["precio"])
-                        print("--------------------------")
+                    if opc_categoria=="2":
+                        for i in menu["menu"]:
+                            if i["categoria"]=="plato_fuerte":
+                                print("--------------------------")
+                                print("Nombre: ",i["nombre"])
+                                print("Precio: ",i["precio"])
+                                print("--------------------------")
 
-                bool=True
-                while bool==True:
-                    plato_pedido=input("nombre de lo que pediste: ")      
-                    for i in menu["menu"]:
-                        if plato_pedido==i["nombre"] and i["categoria"]=="plato_fuerte":
-                            lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
-                            bool=False
+                        bool=True
+                        while bool==True:
+                            plato_pedido=input("nombre de lo que pediste: ")      
+                            for i in menu["menu"]:
+                                if plato_pedido==i["nombre"] and i["categoria"]=="plato_fuerte":
+                                    lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
+                                    bool=False
 
-            if opc_categoria=="3":
-                for i in menu["menu"]:
-                    if i["categoria"]=="bebida":
-                        print("--------------------------")
-                        print("Nombre: ",i["nombre"])
-                        print("Precio: ",i["precio"])
-                        print("--------------------------")
-                bool=True
-                while bool==True:
-                    plato_pedido=input("nombre de lo que pediste: ")      
-                    for i in menu["menu"]:
-                        if plato_pedido==i["nombre"] and i["categoria"]=="bebida":
-                            lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
-                            bool=False
+                    if opc_categoria=="3":
+                        for i in menu["menu"]:
+                            if i["categoria"]=="bebida":
+                                print("--------------------------")
+                                print("Nombre: ",i["nombre"])
+                                print("Precio: ",i["precio"])
+                                print("--------------------------")
+                        bool=True
+                        while bool==True:
+                            plato_pedido=input("nombre de lo que pediste: ")      
+                            for i in menu["menu"]:
+                                if plato_pedido==i["nombre"] and i["categoria"]=="bebida":
+                                    lista_pedido.append({"categoria":i["categoria"],"nombre":i["nombre"],"precio":i["precio"]})
+                                    bool=False
 
-            if opc_categoria=="4":
-                booleano=False
-        estado=input("Estado del pedido: ")
-        pedidos["pedidos"].append({"cliente":nombre_cliente, "items":lista_pedido,"estado":estado})
-        guardarpedidos(pedidos)
+                    if opc_categoria=="4":
+                        booleano=False
+                x2=True
+                while x2==True:
+                    estado=input("Estado del pedido: ")
+                    if estado=="creado" or estado=="preparacion" or estado=="pagado":
+                        x2=False
+                    else:
+                        print("este estado no existe o te equivocaste al escribirlo")
+                fecha=datetime.now(timezone.utc)#obtiene la fecha
+                fecha_organizada=fecha.strftime("%Y-%m-%d %H:%M:%S")#organiza la fecha con un nuevo formato
+                precio=0
+                for i in lista_pedido:
+                    precio+=i["precio"]
+                if estado=="pagado":
+                    pagos["pagos"].append({"cliente":nombre_cliente,"total":precio,"fecha_pago":fecha_organizada})
+                pedidos["pedidos"].append({"cliente":nombre_cliente, "items":lista_pedido,"estado":estado})
+                guardarpagos(pagos)
+                guardarpedidos(pedidos)
+                x1=False
     if opc=="2":
         pedidos=Abrirpedidos()
         bool=True
